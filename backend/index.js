@@ -17,7 +17,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/dovelEmployees')
         console.log(err);
     })
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json())
 app.use("/api/employees",employeeRoutes)
 
 // 404 Handler
@@ -33,8 +33,7 @@ app.use((err,req,res,next)=>{
     if(!err.message){
         err.message="Oh no, Something went wrong"
     }
-    res.status(statusCode)
-    res.send(err)
+    res.status(statusCode).json({success:false,message:err.message})
 })
 
 app.listen(process.env.PORT,()=>{

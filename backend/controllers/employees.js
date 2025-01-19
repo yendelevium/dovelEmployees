@@ -3,13 +3,13 @@ const ExpressError = require("../utils/expressError")
 
 module.exports.getEmployees=async (req,res)=>{
     const employees = await Employee.find({})
-    res.send(employees)
+    res.status(200).json({success:true,data:employees})
 }
 
 module.exports.createEmployee=async (req,res)=>{
     const employee = new Employee(req.body)
     await employee.save()
-    res.send("CREATED")
+    res.status(201).json({success:true,data:employee})
     
 }
 
@@ -20,7 +20,7 @@ module.exports.showEmployee= async (req,res)=>{
     if(!employee){
         throw new ExpressError("Employee not found",400)
     }
-    res.send(employee)
+    res.status(201).json({success:true,data:employee})
 }
 
 module.exports.editEmployee=async (req,res)=>{
@@ -31,7 +31,7 @@ module.exports.editEmployee=async (req,res)=>{
         throw new ExpressError("Employee doesn't exist",400)
     }
     // It will send the prev version only
-    res.send(employee)
+    res.status(201).json({success:true,data:employee})
 }
 
 module.exports.deleteEmployee=async (req,res)=>{
@@ -41,5 +41,5 @@ module.exports.deleteEmployee=async (req,res)=>{
         console.log("Employee doesn't exist")
         throw new ExpressError("Employee doesn't exist",400)
     }
-    res.send("DELETED!")
+    res.status(201).json({success:true,data:employee})
 }
