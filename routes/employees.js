@@ -2,14 +2,15 @@ const express=require('express');
 const router=express.Router()
 
 const employeeControllers = require("../controllers/employees")
+const catchAsync = require("../utils/catchAsync")
 
 router.route("/")
-    .get(employeeControllers.getEmployees)
-    .post(employeeControllers.createEmployee)
+    .get(catchAsync(employeeControllers.getEmployees))
+    .post(catchAsync(employeeControllers.createEmployee))
 
 router.route("/:empId")
-    .get(employeeControllers.showEmployee)
-    .put(employeeControllers.editEmployee)
-    .delete(employeeControllers.deleteEmployee)
+    .get(catchAsync(employeeControllers.showEmployee))
+    .put(catchAsync(employeeControllers.editEmployee))
+    .delete(catchAsync(employeeControllers.deleteEmployee))
 
 module.exports=router
