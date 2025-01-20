@@ -1,6 +1,9 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 const express=require("express")
 const app=express()
 const bodyParser = require('body-parser');
+import path from "path"
 
 require('dotenv').config()
 const employeeRoutes=require("./routes/employees")
@@ -20,12 +23,6 @@ mongoose.connect('mongodb://127.0.0.1:27017/dovelEmployees')
 app.use(express.json())
 app.use("/api/employees",employeeRoutes)
 
-// 404 Handler
-app.all("*", (req,res,next)=>{
-    console.log("404 Not found")
-    next(new ExpressError(message="404 Page not found", statusCode=400))
-})
-
 // Error Handler
 app.use((err,req,res,next)=>{
     console.log("An Error Occured")
@@ -35,6 +32,16 @@ app.use((err,req,res,next)=>{
     }
     res.status(statusCode).json({success:false,message:err.message})
 })
+
+const __dirname = path.resolve()
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname,"/frontend/dist")))
+
+    // On visiting any other path APART from the api endpoints, send the react index.html
+    app.get("*",(req,res)=>{
+        res.sendFile(path.resolve(__dirname,"frontend","dist","index.html"))
+    })
+}
 
 app.listen(process.env.PORT,()=>{
     console.log(`Listening on port ${process.env.PORT}`)
