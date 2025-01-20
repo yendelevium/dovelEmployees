@@ -1,6 +1,7 @@
 import React from "react"
 import { useEmployeeStore } from "../store/employee"
 import { Table, Heading, Button, Container, HStack, Flex } from "@chakra-ui/react"
+import { Toaster, toaster } from "./ui/toaster"
 import { Link } from "react-router-dom"
 
 export default function EmployeeList(){
@@ -18,6 +19,10 @@ export default function EmployeeList(){
         await deleteEmployee(empId)
       }
       deletion()
+      toaster.create({
+        description: "Successfully deleted employee",
+        type: "success",
+      })
     }
     function renderList(){
       if(employees.length == 0){
@@ -52,14 +57,14 @@ export default function EmployeeList(){
                 <Table.Cell>
                   <HStack>
                     <Link
-                      to={`/${employee.empId}/edit`}
+                      to={`/emp/${employee.empId}/edit`}
                       state= {{
                         ...employee
                       }}
                     ><Button>Edit</Button></Link>
                     <Button onClick={()=>handleDelete(employee.empId)}>Delete</Button>
                     <Link
-                      to={`/${employee.empId}`}
+                      to={`/emp/${employee.empId}`}
                       state= {{
                         ...employee
                       }}
@@ -77,6 +82,7 @@ export default function EmployeeList(){
   return (
     <>
       {renderList()}
+      <Toaster />
     </>
   )
 }

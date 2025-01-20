@@ -14,7 +14,7 @@ const EmployeeDetails = () => {
     const deletion = async ()=> {
       await deleteEmployee(empId)
     }
-    window.location.href="/"
+    window.location.href="/?success=true&message=deleted"
     deletion()
   }
   return (
@@ -38,7 +38,7 @@ const EmployeeDetails = () => {
           </Card.Body>
           <Card.Footer>
             <Link
-              to={`/${employee.empId}/edit`}
+              to={`/emp/${employee.empId}/edit`}
               state= {{
                 ...employee
               }}

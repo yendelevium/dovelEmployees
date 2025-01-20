@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import AddEmployee from './pages/AddEmployee'
 import EditEmployee from './pages/EditEmployee'
 import EmployeeDetails from './pages/EmployeeDetails'
+import { NotFound } from './pages/NotFound'
 import Navbar from './components/Navbar'
 
 const router = createBrowserRouter([
@@ -20,12 +21,16 @@ const router = createBrowserRouter([
     element: <AddEmployee />
   },
   {
-    path:"/:empId",
+    path:"/emp/:empId",
     element:<EmployeeDetails />
   },
   {
-    path:"/:empId/edit",
+    path:"/emp/:empId/edit",
     element:<EditEmployee />
+  },
+  {
+    path:"*",
+    element:<NotFound />
   }
   // Add an Error route & component
 ])

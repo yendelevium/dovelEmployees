@@ -1,9 +1,9 @@
-import { Container, Input, VStack, Heading, Button, Toast, HStack  } from "@chakra-ui/react";
+import { Input, VStack, Heading, Button, Toast, HStack  } from "@chakra-ui/react";
 import { Field } from "./ui/field"
 import React from "react";
 import { useEmployeeStore } from "../store/employee";
 import { Toaster, toaster } from "./ui/toaster"
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // Based on props it's either an edit form or an add form
 export default function EmployeeForm(props){
@@ -14,14 +14,13 @@ export default function EmployeeForm(props){
         salary:props.salary || 0,
     })
     const {createEmployee, editEmployee} = useEmployeeStore()
-    const navigate = useNavigate();
 
     async function handleAddEmployee(){
         const {success,message} = await createEmployee(newEmployee)
         console.log(success,message)
         // Redirect to home if successfully created Employee
         if(success){
-            window.location.href="/?success=true"
+            window.location.href="/?success=true&message=added"
         }else{
             toaster.create({
                 description: message,
@@ -35,7 +34,7 @@ export default function EmployeeForm(props){
 
         // Redirect to home if successfully edited Employee
         if(success){
-            window.location.href="/?success=true"
+            window.location.href="/?success=true&message=updated"
         }else{
             toaster.create({
                 description: message,
