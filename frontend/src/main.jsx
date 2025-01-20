@@ -24,7 +24,7 @@ const router = createBrowserRouter([
     element:<EmployeeDetails />
   },
   {
-    path:"/:empId/",
+    path:"/:empId/edit",
     element:<EditEmployee />
   }
   // Add an Error route & component

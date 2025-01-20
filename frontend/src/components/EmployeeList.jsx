@@ -1,30 +1,37 @@
 import React from "react"
 import { useEmployeeStore } from "../store/employee"
-import { Table, Heading } from "@chakra-ui/react"
+import { Table, Heading, Button, Container, HStack, Flex } from "@chakra-ui/react"
 import { Link } from "react-router-dom"
 
 export default function EmployeeList(){
-    const {employees, getEmployees}= useEmployeeStore()
+    const {employees, getEmployees, deleteEmployee}= useEmployeeStore()
     React.useEffect(()=>{
         const fetchEmployees = async ()=>{
-            await getEmployees()
+          await getEmployees()
         }
         fetchEmployees()
     },[getEmployees])
     // getEmployees is the dependency and NOT employees to avoid redundant calls
     // When you add a new employee it already refreshes employees state
-    console.log(employees)
+    function handleDelete(empId){
+      const deletion = async ()=> {
+        await deleteEmployee(empId)
+      }
+      deletion()
+    }
     function renderList(){
-      if(employees==[]){
+      if(employees.length == 0){
         return(
           <>
-            <Heading textAlign={"center"}>No Employees in the List</Heading>
-            <Link to="/new"></Link>
+            <Container textAlign={"center"}>
+              <Heading>No Employees in the List</Heading>
+              <Link to="/new"><Button>Add Employee?</Button></Link>
+            </Container>
           </>
         )
       }return(
         <>
-        <Heading>All Employees</Heading>
+        <Heading size={"6xl"} mb={5} textAlign={"center"}>All Employees</Heading>
         <Table.Root size="sm" variant="outline" showColumnBorder={true} my={"1rem"}>
           <Table.Header>
             <Table.Row>
@@ -32,6 +39,7 @@ export default function EmployeeList(){
               <Table.ColumnHeader>Name</Table.ColumnHeader>
               <Table.ColumnHeader>Position</Table.ColumnHeader>
               <Table.ColumnHeader>Salary</Table.ColumnHeader>
+              <Table.ColumnHeader>Action</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -41,10 +49,28 @@ export default function EmployeeList(){
                 <Table.Cell>{employee.name}</Table.Cell>
                 <Table.Cell>{employee.position}</Table.Cell>
                 <Table.Cell>{employee.salary}</Table.Cell>
+                <Table.Cell>
+                  <HStack>
+                    <Link
+                      to={`/${employee.empId}/edit`}
+                      state= {{
+                        ...employee
+                      }}
+                    ><Button>Edit</Button></Link>
+                    <Button onClick={()=>handleDelete(employee.empId)}>Delete</Button>
+                    <Link
+                      to={`/${employee.empId}`}
+                      state= {{
+                        ...employee
+                      }}
+                    ><Button>More Details</Button></Link>
+                  </HStack>
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
         </Table.Root>
+        <Link to="/new"><Button>Add Employee</Button></Link>
       </>
       )
     }
@@ -54,11 +80,3 @@ export default function EmployeeList(){
     </>
   )
 }
-
-// const employees = [
-//   { id: 1, name: "Laptop", category: "Electronics", price: 999.99 },
-//   { id: 2, name: "Coffee Maker", category: "Home Appliances", price: 49.99 },
-//   { id: 3, name: "Desk Chair", category: "Furniture", price: 150.0 },
-//   { id: 4, name: "Smartphone", category: "Electronics", price: 799.99 },
-//   { id: 5, name: "Headphones", category: "Accessories", price: 199.99 },
-// ]

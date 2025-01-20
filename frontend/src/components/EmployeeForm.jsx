@@ -1,24 +1,39 @@
-import { Container, Input, VStack, Heading, Button, Toast  } from "@chakra-ui/react";
+import { Container, Input, VStack, Heading, Button, Toast, HStack  } from "@chakra-ui/react";
 import { Field } from "./ui/field"
 import React from "react";
 import { useEmployeeStore } from "../store/employee";
 import { Toaster, toaster } from "./ui/toaster"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 // Based on props it's either an edit form or an add form
 export default function EmployeeForm(props){
     const [newEmployee, setNewEmployee]=React.useState({
-        name:"",
-        empId:"",
-        position:"",
-        salary:0,
+        name:props.name || "",
+        empId:props.empId || "",
+        position:props.position || "",
+        salary:props.salary || 0,
     })
-    const {createEmployee} = useEmployeeStore()
+    const {createEmployee, editEmployee} = useEmployeeStore()
     const navigate = useNavigate();
+
     async function handleAddEmployee(){
-        console.log(newEmployee)
         const {success,message} = await createEmployee(newEmployee)
         console.log(success,message)
+        // Redirect to home if successfully created Employee
+        if(success){
+            window.location.href="/?success=true"
+        }else{
+            toaster.create({
+                description: message,
+                type: "error",
+            })
+        }
+    }
+
+    async function handleEditEmployee(){
+        const{success,message}= await editEmployee(newEmployee)
+
+        // Redirect to home if successfully edited Employee
         if(success){
             window.location.href="/?success=true"
         }else{
@@ -31,7 +46,7 @@ export default function EmployeeForm(props){
 
     return(
         <>
-            <Heading>Add Employee</Heading>
+            <Heading size={"6xl"} mb={5} textAlign={"center"}>{Object.keys(props).length==0?"Add Employee":"Edit Employee"}</Heading>
             <VStack py={"1rem"} spaceY={2}>
                 <Field label="EmpId">
                     <Input 
@@ -39,6 +54,7 @@ export default function EmployeeForm(props){
                         name="empId"
                         onChange={(e)=>setNewEmployee({...newEmployee,empId:e.target.value})}
                         value={newEmployee.empId}
+                        disabled={Object.keys(props).length==0?false:true}
                     />
                 </Field>
                 <Field label="Name">
@@ -67,9 +83,20 @@ export default function EmployeeForm(props){
                         value={newEmployee.salary}
                     />
                 </Field>
-                <Button alignSelf={"start"} onClick={handleAddEmployee}>
-                    Add Employee
-                </Button>
+                <HStack alignSelf={"start"}>
+                    {Object.keys(props).length==0
+                    ?
+                        <Button onClick={handleAddEmployee}>
+                            Add Employee
+                        </Button>
+                    :
+                        <Button onClick={handleEditEmployee}>
+                        Update Employee
+                        </Button>
+                    }
+                    <Link to="/"><Button>Back to Home</Button></Link>
+                </HStack>
+                
             </VStack>
             <Toaster />
         </>
