@@ -21,7 +21,8 @@ export const useEmployeeStore = create((set)=>({
         const data=await res.json()
         // Updating the ENTIRE state, so getEmployees also gets updated, so the home-page re-renders
         set(prevState=>({ employees:[...prevState.employees, data.data]} ))
-        return {success:true, message:"Employee added successfully"}
+        console.log(data.success)
+        return {success:data.success, message:data.message || "Employee added successfully"}
     },
 
     getEmployees : async ()=>{

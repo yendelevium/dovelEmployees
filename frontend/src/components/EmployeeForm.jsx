@@ -19,7 +19,7 @@ export default function EmployeeForm(props){
         const {success,message} = await createEmployee(newEmployee)
         console.log(success,message)
         // Redirect to home if successfully created Employee
-        if(success){
+        if(success===true){
             window.location.href="/?success=true&message=added"
         }else{
             toaster.create({
