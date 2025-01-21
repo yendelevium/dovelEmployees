@@ -1,0 +1,32 @@
+### Get all employees
+GET http://localhost:8080/api/employees
+
+### Add an employee
+### Copy the _id field and replace the idd in the url with this value
+POST http://localhost:8080/api/employees
+Content-Type: application/json
+
+{
+  "name": "Ravi",
+  "position": "SDE I",
+  "salary": "12345678"
+}
+
+### Get employee Details
+### Replace the id from the _id of your employee
+GET http://localhost:8080/api/employees/678f1a10fbc6b321fec7547c
+
+### Update employee
+### Replace the id from the _id of your employee
+PUT http://localhost:8080/api/employees/678f1a10fbc6b321fec7547c
+Content-Type: application/json
+
+{
+  "name": "Ravi Prakash",
+  "position": "Project Manages",
+  "salary": "87654321"
+}
+
+### Delete an Employee
+### Replace the id from the _id of your employee
+DELETE http://localhost:8080/api/employees/678f1a10fbc6b321fec7547c

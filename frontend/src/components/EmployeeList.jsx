@@ -40,7 +40,6 @@ export default function EmployeeList(){
         <Table.Root size="sm" variant="outline" showColumnBorder={true} my={"1rem"}>
           <Table.Header>
             <Table.Row>
-              <Table.ColumnHeader>EmpId</Table.ColumnHeader>
               <Table.ColumnHeader>Name</Table.ColumnHeader>
               <Table.ColumnHeader>Position</Table.ColumnHeader>
               <Table.ColumnHeader>Salary</Table.ColumnHeader>
@@ -49,26 +48,25 @@ export default function EmployeeList(){
           </Table.Header>
           <Table.Body>
             {employees.map((employee) => (
-              <Table.Row key={employee.empId}>
-                <Table.Cell>{employee.empId}</Table.Cell>
+              <Table.Row key={employee._id}>
                 <Table.Cell>{employee.name}</Table.Cell>
                 <Table.Cell>{employee.position}</Table.Cell>
                 <Table.Cell>{employee.salary}</Table.Cell>
                 <Table.Cell>
                   <HStack>
                     <Link
-                      to={`/emp/${employee.empId}/edit`}
+                      to={`/emp/${employee._id}/edit`}
                       state= {{
                         ...employee
                       }}
-                    ><Button>Edit</Button></Link>
-                    <Button onClick={()=>handleDelete(employee.empId)}>Delete</Button>
+                    ><Button colorPalette={"green"} variant={"outline"}>Edit</Button></Link>
+                    <Button onClick={()=>handleDelete(employee._id)} colorPalette={"red"} variant={"outline"}>Delete</Button>
                     <Link
-                      to={`/emp/${employee.empId}`}
+                      to={`/emp/${employee._id}`}
                       state= {{
                         ...employee
                       }}
-                    ><Button>More Details</Button></Link>
+                    ><Button colorPalette={"purple"} variant={"outline"}>More Details</Button></Link>
                   </HStack>
                 </Table.Cell>
               </Table.Row>

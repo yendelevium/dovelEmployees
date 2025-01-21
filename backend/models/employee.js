@@ -1,11 +1,6 @@
 // Employee schema
 const mongoose = require("mongoose")
 const EmployeeSchema = mongoose.Schema({
-    empId : {
-        type: String,
-        required: true,
-        unique : true
-    },
     name : {
         type: String,
         required: true

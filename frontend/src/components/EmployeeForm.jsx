@@ -3,17 +3,18 @@ import { Field } from "./ui/field"
 import React from "react";
 import { useEmployeeStore } from "../store/employee";
 import { Toaster, toaster } from "./ui/toaster"
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 // Based on props it's either an edit form or an add form
 export default function EmployeeForm(props){
     const [newEmployee, setNewEmployee]=React.useState({
         name:props.name || "",
-        empId:props.empId || "",
         position:props.position || "",
         salary:props.salary || 0,
     })
     const {createEmployee, editEmployee} = useEmployeeStore()
+    const {empId}=useParams()
+    console.log(empId)
 
     async function handleAddEmployee(){
         const {success,message} = await createEmployee(newEmployee)
@@ -30,7 +31,7 @@ export default function EmployeeForm(props){
     }
 
     async function handleEditEmployee(){
-        const{success,message}= await editEmployee(newEmployee)
+        const{success,message}= await editEmployee(newEmployee,empId)
 
         // Redirect to home if successfully edited Employee
         if(success){
@@ -47,15 +48,6 @@ export default function EmployeeForm(props){
         <>
             <Heading size={"6xl"} mb={5} textAlign={"center"}>{Object.keys(props).length==0?"Add Employee":"Edit Employee"}</Heading>
             <VStack py={"1rem"} spaceY={2}>
-                <Field label="EmpId">
-                    <Input 
-                        placeholder="8" 
-                        name="empId"
-                        onChange={(e)=>setNewEmployee({...newEmployee,empId:e.target.value})}
-                        value={newEmployee.empId}
-                        disabled={Object.keys(props).length==0?false:true}
-                    />
-                </Field>
                 <Field label="Name">
                     <Input 
                         placeholder="Richard" 
@@ -85,15 +77,23 @@ export default function EmployeeForm(props){
                 <HStack alignSelf={"start"}>
                     {Object.keys(props).length==0
                     ?
-                        <Button onClick={handleAddEmployee}>
+                        <Button 
+                            onClick={handleAddEmployee}
+                            colorPalette={"green"} 
+                            variant={"outline"}
+                        >
                             Add Employee
                         </Button>
                     :
-                        <Button onClick={handleEditEmployee}>
+                        <Button 
+                            onClick={handleEditEmployee}
+                            colorPalette={"green"} 
+                            variant={"outline"}
+                        >
                         Update Employee
                         </Button>
                     }
-                    <Link to="/"><Button>Back to Home</Button></Link>
+                    <Link to="/"><Button colorPalette={"orange"} variant={"outline"}>Back to Home</Button></Link>
                 </HStack>
                 
             </VStack>

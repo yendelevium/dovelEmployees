@@ -1,5 +1,5 @@
 import React from 'react'
-import { useLocation, Link } from 'react-router-dom'
+import { useLocation, Link, useParams } from 'react-router-dom'
 import { Badge, Box, Card, Image, Button, Flex, Heading } from "@chakra-ui/react"
 import { useEmployeeStore } from "../store/employee"
 
@@ -8,6 +8,8 @@ const EmployeeDetails = () => {
   const location = useLocation()
   const employee = location.state
   const {deleteEmployee}= useEmployeeStore()
+  const {empId} = useParams()
+  console.log(empId)
 
   // Add toast
   function handleDelete(empId){
@@ -29,7 +31,7 @@ const EmployeeDetails = () => {
         />
         <Box>
           <Card.Body>
-            <Card.Title mb="2">EmpId: {employee.empId}, {employee.name}</Card.Title>
+            <Card.Title mb="2">Empmploee Name: {employee.name}</Card.Title>
             <Card.Description>
               About : Lorem ipsum dolor sit amet, consectetur adipisicing elit. Expedita, corporis accusamus. Mollitia, nam praesentium alias earum omnis laboriosam consectetur esse recusandae sequi commodi at pariatur, qui, voluptatibus labore ab quo.
             </Card.Description>
@@ -38,15 +40,15 @@ const EmployeeDetails = () => {
           </Card.Body>
           <Card.Footer>
             <Link
-              to={`/emp/${employee.empId}/edit`}
+              to={`/emp/${empId}/edit`}
               state= {{
                 ...employee
               }}
-            ><Button>Edit</Button></Link>
-            <Button onClick={()=>handleDelete(employee.empId)}>Delete</Button>
+            ><Button colorPalette={"green"} variant={"outline"}>Edit</Button></Link>
+            <Button onClick={()=>handleDelete(empId)} colorPalette={"red"} variant={"outline"}>Delete</Button>
             <Link
               to="/"
-            ><Button>Back to Home</Button></Link>
+            ><Button colorPalette={"orange"} variant={"outline"}>Back to Home</Button></Link>
           </Card.Footer>
         </Box>
       </Card.Root>

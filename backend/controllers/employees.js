@@ -16,7 +16,7 @@ module.exports.createEmployee=async (req,res)=>{
 module.exports.showEmployee= async (req,res)=>{
     const {empId} = req.params
     // console.log(req.params)
-    const employee = await Employee.findOne({empId: empId})
+    const employee = await Employee.findById(empId)
     if(!employee){
         throw new ExpressError("Employee not found",400)
     }
@@ -25,7 +25,7 @@ module.exports.showEmployee= async (req,res)=>{
 
 module.exports.editEmployee=async (req,res)=>{
     const {empId} = req.params
-    const employee = await Employee.findOneAndUpdate({empId},req.body)
+    const employee = await Employee.findByIdAndUpdate(empId,req.body)
     if(!employee){
         console.log("Employee doesn't exist")
         throw new ExpressError("Employee doesn't exist",400)
@@ -36,7 +36,7 @@ module.exports.editEmployee=async (req,res)=>{
 
 module.exports.deleteEmployee=async (req,res)=>{
     const {empId} = req.params
-    const employee = await Employee.findOneAndDelete({empId})
+    const employee = await Employee.findByIdAndDelete(empId)
     if(!employee){
         console.log("Employee doesn't exist")
         throw new ExpressError("Employee doesn't exist",400)

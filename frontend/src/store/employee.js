@@ -5,7 +5,7 @@ export const useEmployeeStore = create((set)=>({
     employees:[],
     setEmployee : (employees)=>set({employees}),
     createEmployee: async (newEmployee)=>{
-        if(!newEmployee.empId || !newEmployee.name || !newEmployee.salary || !newEmployee.position){
+        if(!newEmployee.name || !newEmployee.salary || !newEmployee.position){
             return {
                 success:false,
                 message:"Fill out all the fields"
@@ -47,7 +47,7 @@ export const useEmployeeStore = create((set)=>({
         const data  = await res.json()
         if (data.success){
             set(prevState =>({
-                employees : prevState.employees.filter((employee)=>employee.empId!=empId)
+                employees : prevState.employees.filter((employee)=>employee._id!=empId)
             }))
             return {success:true, message:"Employee deleted successfully"}
         }else{
@@ -55,8 +55,8 @@ export const useEmployeeStore = create((set)=>({
         }
     },
 
-    editEmployee : async(editedEmployee)=>{
-        const res = await fetch(`/api/employees/${editedEmployee.empId}`,{
+    editEmployee : async(editedEmployee,empId)=>{
+        const res = await fetch(`/api/employees/${empId}`,{
             method:"PUT",
             headers:{
                 "Content-Type":"application/json"
@@ -67,7 +67,7 @@ export const useEmployeeStore = create((set)=>({
         if (data.success){
             set(prevState=>({
                 employees:prevState.employees.map((employee)=>{
-                    if(employee.empID==editedEmployee.empID){
+                    if(employee._id==empId){
                         return editedEmployee
                     }
                     return employee
